@@ -36,13 +36,10 @@ router.post('/employees', (req, res) => {
   const { firstName, lastName, department } = req.body;
   req.db
     .collection('employees')
-    .insertOne(
-      { firstName: firstName, lastName: lastName, department: department },
-      (err, data) => {
-        if (err) res.status(500).json({ message: err });
-        else res.json({ message: 'OK' });
-      }
-    );
+    .insertOne({ firstName, lastName, department }, (err, data) => {
+      if (err) res.status(500).json({ message: err });
+      else res.json({ message: 'OK' });
+    });
 });
 
 router.put('/employees/:id', (req, res) => {
@@ -51,9 +48,9 @@ router.put('/employees/:id', (req, res) => {
     { _id: ObjectId(req.params.id) },
     {
       $set: {
-        firstName: firstName,
-        lastName: lastName,
-        department: department,
+        firstName,
+        lastName,
+        department,
       },
     },
     (err, data) => {

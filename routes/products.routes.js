@@ -34,12 +34,10 @@ router.get('/products/:id', (req, res) => {
 
 router.post('/products', (req, res) => {
   const { name, client } = req.params.body;
-  req.db
-    .collection('products')
-    .insertOne({ name: name, client: client }, (err, data) => {
-      if (err) res.status(500).json({ message: err });
-      else res.json({ message: 'OK' });
-    });
+  req.db.collection('products').insertOne({ name, client }, (err, data) => {
+    if (err) res.status(500).json({ message: err });
+    else res.json({ message: 'OK' });
+  });
 });
 
 router.put('/products/:id', (req, res) => {
@@ -48,7 +46,7 @@ router.put('/products/:id', (req, res) => {
     .collection('products')
     .updateOne(
       { _id: ObjectId(req.params.id) },
-      { $set: { name: name, client: client } },
+      { $set: { name, client } },
       (err, data) => {
         if (err) res.status(500).json({ message: err });
         else if (!data) res.status(404).json({ message: 'data not found' });
